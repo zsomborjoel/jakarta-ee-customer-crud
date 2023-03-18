@@ -19,6 +19,14 @@ public class Customer {
         this.gender = gender;
     }
 
+    public Customer(Integer id, String name, String email, String phone, String gender) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+    }
+
     public Integer getId() {
         return id;
     }
