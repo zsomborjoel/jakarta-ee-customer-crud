@@ -12,6 +12,10 @@ public class Customer {
 
     public Customer() {}
 
+    public Customer(Integer id) {
+        this.id = id;
+    }
+
     public Customer(String name, String email, String phone, String gender) {
         this.name = name;
         this.email = email;

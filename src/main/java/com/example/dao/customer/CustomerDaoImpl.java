@@ -1,6 +1,7 @@
 package com.example.dao.customer;
 
 import com.example.config.DataSourceFactory;
+import com.example.controller.CustomerController;
 import com.example.model.Customer;
 
 import javax.xml.transform.Result;
@@ -13,14 +14,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class CustomerDaoImpl implements CustomerDao {
+
+    private final Logger LOGGER = Logger.getLogger(CustomerDaoImpl.class.getName());
+
+    private CustomerDaoImpl() {}
+
+    private static class SingletonHelper {
+        private static final CustomerDaoImpl INSTANCE = new CustomerDaoImpl();
+    }
+
+    public static CustomerDaoImpl getInstance() {
+        return SingletonHelper.INSTANCE;
+    }
+
     @Override
     public Optional<Customer> find(final Integer id) throws SQLException {
-        final String sql = """
-                    SELECT id, name, email, phone, gender
-                    FROM customer
-                    WHERE id=?""";
+        final String sql = "SELECT id, name, email, phone, gender\n" +
+                           "FROM customer\n" +
+                           "WHERE id=?";
 
         ResultSet resultSet;
         final Connection connection = DataSourceFactory.getConnection();
@@ -45,9 +59,8 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public List<Customer> findAll() throws SQLException {
         final List<Customer> customers = new ArrayList<>();
-        final String sql = """
-                    SELECT id, name, email, phone, gender
-                    FROM customer""";
+        final String sql = "SELECT id, name, email, phone, gender\n" +
+                           "FROM customer";
 
         ResultSet resultSet;
         final Connection connection = DataSourceFactory.getConnection();
@@ -70,9 +83,8 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public boolean save(final Customer customer) throws SQLException {
-        final String sql = """
-                    INSERT INTO customer (name, email, phone, gender)
-                    VALUES (?, ?, ?, ?)""";
+        final String sql = "INSERT INTO customer (name, email, phone, gender)\n" +
+                           "VALUES (?, ?, ?, ?)";
 
         final Connection connection = DataSourceFactory.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
@@ -86,13 +98,12 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public boolean update(final Customer customer) throws SQLException {
-        final String sql = """
-                    UPDATE customer SET
-                        name = ?,
-                        email = ?,
-                        phone = ?,
-                        gender = ?
-                    WHERE id = ?""";
+        final String sql = "UPDATE customer SET\n" +
+                           "    name = ?,\n" +
+                           "    email = ?,\n" +
+                           "    phone = ?,\n" +
+                           "    gender = ?\n" +
+                           "WHERE id = ?";
 
         final Connection connection = DataSourceFactory.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
