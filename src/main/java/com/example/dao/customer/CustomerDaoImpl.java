@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,7 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public Optional<Customer> find(final Integer id) throws SQLException {
         final String sql = """
-                    SELECT id, name, phone, email, gender
+                    SELECT id, name, email, phone, gender
                     FROM customer
                     WHERE id=?""";
 
@@ -32,8 +33,8 @@ public class CustomerDaoImpl implements CustomerDao {
             return Optional.of(new Customer(
                     resultSet.getInt("id"),
                     resultSet.getString("name"),
-                    resultSet.getString("phone"),
                     resultSet.getString("email"),
+                    resultSet.getString("phone"),
                     resultSet.getString("gender")
             ));
         }
@@ -43,7 +44,28 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public List<Customer> findAll() throws SQLException {
-        return null;
+        final List<Customer> customers = new ArrayList<>();
+        final String sql = """
+                    SELECT id, name, email, phone, gender
+                    FROM customer""";
+
+        ResultSet resultSet;
+        final Connection connection = DataSourceFactory.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+            resultSet = preparedStatement.executeQuery();
+        }
+
+        while (resultSet.next()) {
+            customers.add(new Customer(
+                    resultSet.getInt("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("email"),
+                    resultSet.getString("phone"),
+                    resultSet.getString("gender")
+            ));
+        }
+
+        return customers;
     }
 
     @Override
