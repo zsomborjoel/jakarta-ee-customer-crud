@@ -107,6 +107,12 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public boolean delete(final Customer customer) throws SQLException {
-        return false;
+        final String sql = "DELETE from customer WHERE id = ?";
+
+        final Connection connection = DataSourceFactory.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+            preparedStatement.setInt(1, customer.getId());
+            return preparedStatement.executeUpdate() > 0;
+        }
     }
 }
