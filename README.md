@@ -1,2 +1,2 @@
 # java-ee-customer-crud
-JavaEE JSP app with crud functionality
+JavaEE servlet app with crud functionality
