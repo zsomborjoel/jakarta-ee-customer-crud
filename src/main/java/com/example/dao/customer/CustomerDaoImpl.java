@@ -25,7 +25,7 @@ public class CustomerDaoImpl implements CustomerDao {
         ResultSet resultSet;
         final Connection connection = DataSourceFactory.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
-            preparedStatement.setString(1, String.valueOf(id));
+            preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
         }
 
@@ -86,7 +86,23 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public boolean update(final Customer customer) throws SQLException {
-        return false;
+        final String sql = """
+                    UPDATE customer SET
+                        name = ?,
+                        email = ?,
+                        phone = ?,
+                        gender = ?
+                    WHERE id = ?""";
+
+        final Connection connection = DataSourceFactory.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+            preparedStatement.setString(1, customer.getName());
+            preparedStatement.setString(2, customer.getEmail());
+            preparedStatement.setString(3, customer.getPhone());
+            preparedStatement.setString(4, customer.getGender());
+            preparedStatement.setInt(5, customer.getId());
+            return preparedStatement.executeUpdate() > 0;
+        }
     }
 
     @Override
