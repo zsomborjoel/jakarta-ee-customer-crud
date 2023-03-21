@@ -1,2 +1,2 @@
-# java-ee-customer-crud
-JavaEE servlet app with crud functionality
+# jakarta-ee-customer-crud
+JakartaEE servlet app with crud functionality
