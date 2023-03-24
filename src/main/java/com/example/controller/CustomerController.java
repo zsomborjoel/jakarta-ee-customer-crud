@@ -18,7 +18,8 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = {"/customers", "/customers/find"})
+@WebServlet(urlPatterns = {"/customers", "/customers/find", "/customers/update",
+                           "/customers/delete", "/customers/insert"})
 public class CustomerController extends HttpServlet {
 
     private CustomerDao customerDao = CustomerDaoImpl.getInstance();
